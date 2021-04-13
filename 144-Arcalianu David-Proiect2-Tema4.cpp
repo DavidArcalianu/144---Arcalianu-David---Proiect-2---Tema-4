@@ -14,7 +14,6 @@ public:
     Agenda(){}
     ~Agenda(){}
     // getteri + setteri
-//    std::string GetElementAgenda(int index) {return c_lista[index];}
     static int GetNrPersAgenda() {return c_nr_persoane;}
     static void SetNrPersoaneAgenda(int nr) {c_nr_persoane = nr;}
     void SetElementAgenda(int index, std::string element)
@@ -130,8 +129,10 @@ public:
     Abonat(Abonat &abonat)
     {
         c_nr_tel = abonat.c_nr_tel;
+        c_id = abonat.c_id;
+        c_nume = abonat.c_nume;
     }
-    Abonat(int id, std::string nume, std::string nr_tel): Persoana(id,nume), c_nr_tel(nr_tel){}
+    Abonat(int id, std::string nume, std::string nr_tel): Persoana(id, nume), c_nr_tel(nr_tel){}
     ~Abonat(){}
     // getter + setter
     std::string GetNrTel(){return c_nr_tel;}
@@ -144,12 +145,16 @@ public:
     }
     friend std::istream &operator>>(std::istream &in, Abonat &abonat)
     {
-        in >> abonat.c_nr_tel;
+        in >> abonat.c_nr_tel >> abonat.c_id;
+        std::cin.get();
+        getline(in,abonat.c_nume);
         return in;
     }
     friend std::ostream &operator<<(std::ostream &out, Abonat &abonat)
     {
-        out << "Numar telefon: " << abonat.c_nr_tel;
+        out << "Numar telefon: " << abonat.c_nr_tel << std::endl;
+        out << "Id persoana: " << abonat.c_id << std::endl;
+        out << "Nume: " << abonat.c_nume << std::endl;
         return out;
     }
 };
@@ -171,8 +176,11 @@ public:
     Abonat_Skype(Abonat_Skype &abonat)
     {
         c_id_skype = abonat.c_id_skype;
+        c_nume = abonat.c_nume;
+        c_nr_tel = abonat.c_nr_tel;
+        c_id = abonat.c_id;
     }
-    Abonat_Skype(std::string nr_tel, std::string id_skype): Abonat(nr_tel), c_id_skype(id_skype){}
+    Abonat_Skype(std::string nr_tel, std::string id_skype, int id, std::string nume): Abonat(id, nume, nr_tel), c_id_skype(id_skype){}
     ~Abonat_Skype(){}
     // getter + setter
     std::string GetIdSkype(){return c_id_skype;}
@@ -185,12 +193,18 @@ public:
     }
     friend std::istream &operator>>(std::istream &in, Abonat_Skype &abonat)
     {
-        in >> abonat.c_id_skype;
+        in >> abonat.c_id_skype >> abonat.c_id;
+        std::cin.get();
+        getline(in,abonat.c_nume);
+        in >> abonat.c_nr_tel;
         return in;
     }
     friend std::ostream &operator<<(std::ostream &out, Abonat_Skype &abonat)
     {
         out << "ID Skype: " << abonat.c_id_skype;
+        out << "Numar telefon: " << abonat.c_nr_tel << std::endl;
+        out << "Id persoana: " << abonat.c_id << std::endl;
+        out << "Nume: " << abonat.c_nume << std::endl;
         return out;
     }
 };
@@ -212,8 +226,14 @@ public:
     Abonat_Skype_Romania(Abonat_Skype_Romania& abonat)
     {
         c_adresa_email = abonat.c_adresa_email;
+        c_nume = abonat.c_nume;
+        c_nr_tel = abonat.c_nr_tel;
+        c_id = abonat.c_id;
+        c_id_skype = abonat.c_id_skype;
     }
     Abonat_Skype_Romania(std::string adresa_email, std::string id_skype): Abonat_Skype(id_skype), c_adresa_email(adresa_email){}
+    Abonat_Skype_Romania(std::string adresa_email, std::string id_skype, std::string nr_tel, int id, std::string nume):
+        Abonat_Skype(nr_tel, id_skype, id, nume), c_adresa_email(adresa_email){}
     ~Abonat_Skype_Romania(){}
     // getter + setter
     std::string GetAdresaEmail(){return c_adresa_email;}
@@ -226,12 +246,20 @@ public:
     }
     friend std::istream &operator>>(std::istream &in, Abonat_Skype_Romania &abonat)
     {
-        in >> abonat.c_adresa_email;
+        in >> abonat.c_adresa_email >> abonat.c_id_skype >> abonat.c_id;
+        std::cin.get();
+        getline(in,abonat.c_nume);
+        in >> abonat.c_nr_tel;
         return in;
     }
     friend std::ostream &operator<<(std::ostream &out, Abonat_Skype_Romania &abonat)
     {
-        out << "Adresa email: " << abonat.c_adresa_email;
+        out << "Tara: Romania" << std::endl;
+        out << "Adresa email: " << abonat.c_adresa_email << std::endl;
+        out << "ID Skype: " << abonat.c_id_skype << std::endl;
+        out << "Numar telefon: " << abonat.c_nr_tel << std::endl;
+        out << "Id persoana: " << abonat.c_id << std::endl;
+        out << "Nume: " << abonat.c_nume << std::endl;
         return out;
     }
 };
@@ -253,8 +281,14 @@ public:
     Abonat_Skype_Extern(Abonat_Skype_Extern& abonat)
     {
         c_tara = abonat.c_tara;
+        c_nr_tel = abonat.c_nr_tel;
+        c_id = abonat.c_id;
+        c_id_skype = abonat.c_id_skype;
+        c_nume = abonat.c_nume;
     }
     Abonat_Skype_Extern(std::string tara, std::string id_skype): Abonat_Skype(id_skype), c_tara(tara){}
+    Abonat_Skype_Extern(std::string tara, std::string id_skype, std::string nr_tel, int id, std::string nume):
+        Abonat_Skype(nr_tel, id_skype, id, nume), c_tara(tara){}
     ~Abonat_Skype_Extern(){}
     // getter + setter
     std::string GetTara(){return c_tara;}
@@ -267,15 +301,30 @@ public:
     }
     friend std::istream &operator>>(std::istream &in, Abonat_Skype_Extern &abonat)
     {
-        in >> abonat.c_tara;
+        in >> abonat.c_tara >> abonat.c_id_skype >> abonat.c_id;
+        std::cin.get();
+        getline(in,abonat.c_nume);
+        in >> abonat.c_nr_tel;;
         return in;
     }
     friend std::ostream &operator<<(std::ostream &out, Abonat_Skype_Extern &abonat)
     {
-        out << "Tara: " << abonat.c_tara;
+        out << "Tara: " << abonat.c_tara << std::endl;
+        out << "ID Skype: " << abonat.c_id_skype << std::endl;
+        out << "Numar telefon: " << abonat.c_nr_tel << std::endl;
+        out << "Id persoana: " << abonat.c_id << std::endl;
+        out << "Nume: " << abonat.c_nume << std::endl;
         return out;
     }
 };
+
+void Demo()
+{
+    Abonat_Skype_Romania abonatSkypeRomania("abd2yahoo.com", "12", "07234234", 12, "Alex Bogdan");
+    std::cout << abonatSkypeRomania << std::endl;
+    Abonat_Skype_Romania abonatSkypeRomania2(abonatSkypeRomania);
+    std::cout << abonatSkypeRomania2;
+}
 
 void printMenuOptions()
 {
@@ -381,6 +430,7 @@ void Meniu()
 
 int main()
 {
-    Meniu();
+//    Meniu();
+    Demo();
     return 0;
 }
